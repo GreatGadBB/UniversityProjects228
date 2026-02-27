@@ -9,5 +9,5 @@
   "keywords": [],
   "author": "Blobra Pigusha",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "module"
 }
