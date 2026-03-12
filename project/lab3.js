@@ -1,6 +1,6 @@
 "use strict"
 
-function memoy(mf){
+function memoy(mf, delCustom){
     const cache={};
     const maxCacheSize=15;
     return function(n){
@@ -10,14 +10,18 @@ function memoy(mf){
         };
 
 
-        for(const i in cache){if(Date.now()-cache[i].lru>10) delete cache[i];}
+        for(const i in cache){if(Date.now()-cache[i].lru>10) delete cache[i];} //time deletion
         if (Object.keys(cache).length>=maxCacheSize){
             let least=Infinity;
             let list;
-            for(const i in cache){
-                if(cache[i].lru<least){
-                    least=cache[i].lru;
-                    list=i;
+            if (typeof delCustom === "function"){
+                list=delCustom(cache); //custom deletion
+            }else{
+                for(const i in cache){
+                    if(cache[i].lru<least){
+                        least=cache[i].lru;
+                        list=i;
+                    };
                 };
             };
             delete cache[list];
@@ -33,8 +37,8 @@ function memoy(mf){
 function fbsequence(n){
     if (n<=1) return n;
     return memEnd(n-2)+memEnd(n-1);
-}
-const memEnd = memoy(fbsequence);
+};
+const memEnd = memoy(fbsequence,0);
 for(let i=0;i<20;i++){
-    console.log(memEnd(i));
+    console.log(memEnd(i,0));
 }
