@@ -11,7 +11,7 @@ function memoy(mf, delCustom){
 
 
         for(const i in cache){if(Date.now()-cache[i].lru>10) delete cache[i];} //time deletion
-        if (cache.length>=maxCacheSize){
+        if (Object.keys(cache).length>=maxCacheSize){
             let least=Infinity;
             let list;
             if (typeof delCustom === "function"){
